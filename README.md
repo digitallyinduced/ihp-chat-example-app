@@ -11,7 +11,9 @@ The real-time functionality is implemented using [IHP Auto Refresh](https://ihp.
 
 ## Live Demo
 
-A live demo is available at [https://ihpchatexampleapp.ihpapp.com/](ihpchatexampleapp.ihpapp.com). You can log in with `demo@digitallyinduced.com` / `demo` or register your own user.
+A live demo is available at [https://ihpchatexampleapp.ihpapp.com/](ihpchatexampleapp.ihpapp.com).
+
+You can log in with `demo@digitallyinduced.com` / `demo` or register your own user.
 
 
 ## Running locally
