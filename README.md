@@ -17,3 +17,9 @@ The real-time functionality is implemented using [IHP Auto Refresh](https://ihp.
     ```bash
     ./start
     ```
+
+## Running on GitPod
+
+If you don't have IHP installed locally, you can develop this project in the Cloud with GitPod:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/digitallyinduced/ihp-chat-example-app)
