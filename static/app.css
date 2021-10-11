@@ -1,0 +1,68 @@
+.message {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: flex;
+    content-visibility: auto;
+    position: relative;
+    overflow:  visible;
+}
+
+.message img {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin-right: 8px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.message:hover {
+    background-color:  #e9ecef;
+}
+
+.message .header {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.message-author {
+    font-weight: bold;
+}
+
+.message .message-body {
+    hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    line-break: anywhere;
+    overflow-wrap: anywhere;
+}
+
+.message .header .created-at {
+    font-weight: 400;
+    opacity: 0.5;
+    font-size: 14px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.message .actions {
+    display: none;
+}
+
+.message:hover .actions {
+    display: block;
+}
+
+.message:hover .actions a {
+    margin-left: 1rem;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column-reverse; /* this makes it auto-scroll to the bottom */
+    max-height: calc(100vh - 130px);
+    min-height: calc(100vh - 130px);
+    overflow: scroll;
+}

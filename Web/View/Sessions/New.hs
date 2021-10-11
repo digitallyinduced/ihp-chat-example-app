@@ -4,12 +4,15 @@ import IHP.AuthSupport.View.Sessions.New
 
 instance View (NewView User) where
     html NewView { .. } = [hsx|
-        <div class="h-100" id="sessions-new">
+        <div class="h-100 mt-4" id="sessions-new">
             <div class="d-flex align-items-center">
                 <div class="w-100">
                     <div style="max-width: 400px" class="mx-auto mb-5">
                         <h5>Please login</h5>
                         {renderForm user}
+
+                        <hr />
+                        <a href={NewUserAction} class="text-muted">Don't have an account yet?</a>
                     </div>
                 </div>
             </div>
