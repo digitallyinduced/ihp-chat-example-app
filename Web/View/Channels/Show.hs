@@ -58,7 +58,7 @@ renderMessage users message = [hsx|
             <div class="header">
                 <div class="d-flex align-items-center">
                     <div class="message-author">{getUserEmail (get #userId message) users}</div>
-                    {messageActions}
+                    {when (get #id currentUser == get #userId message) messageActions}
                 </div>
                 <div class="created-at">
                     {get #createdAt message |> timeAgo}
