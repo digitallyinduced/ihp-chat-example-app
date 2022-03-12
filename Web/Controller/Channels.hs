@@ -31,6 +31,9 @@ instance Controller ChannelsController where
         channel <- fetch channelId
             >>= pure . modify #messages (orderByDesc #createdAt)
             >>= fetchRelated #messages
+        users <- query @User
+            |> filterWhereIn (#id, map (get #userId) (get #messages channel))
+            |> fetch
         channels <- query @Channel
             |> orderBy #createdAt
             |> fetch

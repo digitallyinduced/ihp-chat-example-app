@@ -3,6 +3,7 @@ import Web.View.Prelude
 
 data ShowView = ShowView
     { channel :: Include "messages" Channel
+    , users :: [User]
     , channels :: [Channel]
     }
 
@@ -23,7 +24,7 @@ instance View ShowView where
 
             <div class="col-9">
                 <div class="messages">
-                    {forEach messages renderMessage}
+                    {forEach messages (renderMessage users)}
                 </div>
                 {newMessageForm}
             </div>
@@ -43,14 +44,20 @@ instance View ShowView where
 
                     bodyPlaceholder = "Send message to #" <> get #name channel
 
-renderMessage :: Message -> Html
-renderMessage message = [hsx|
+getUserEmail :: Id' "users" -> [User] -> Text
+getUserEmail id users =
+    case find (\u -> id == (get #id u)) users of
+        Nothing -> ""
+        Just u -> get #email u
+
+renderMessage :: [User] -> Message -> Html
+renderMessage users message = [hsx|
     <div class="message">
         <img src="https://picsum.photos/64/64" loading="lazy">
         <div class="flex-grow-1">
             <div class="header">
                 <div class="d-flex align-items-center">
-                    <div class="message-author">Marc Scholten</div>
+                    <div class="message-author">{getUserEmail (get #userId message) users}</div>
                     {messageActions}
                 </div>
                 <div class="created-at">
