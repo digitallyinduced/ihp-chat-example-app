@@ -44,11 +44,9 @@ instance View ShowView where
 
                     bodyPlaceholder = "Send message to #" <> get #name channel
 
-getUserEmail :: Id' "users" -> [User] -> Text
+getUserEmail :: Id User -> [User] -> Text
 getUserEmail id users =
-    case find (\u -> id == (get #id u)) users of
-        Nothing -> ""
-        Just u -> get #email u
+    maybe "" (get #email) $ find (\u -> id == (get #id u)) users
 
 renderMessage :: [User] -> Message -> Html
 renderMessage users message = [hsx|
