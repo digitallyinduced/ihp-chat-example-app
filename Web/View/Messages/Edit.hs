@@ -6,7 +6,7 @@ data EditView = EditView { message :: Message }
 instance View EditView where
     html EditView { .. } = renderModal Modal
                 { modalTitle = "Edit Message"
-                , modalCloseUrl = pathTo ShowChannelAction { channelId = get #channelId message }
+                , modalCloseUrl = pathTo ShowChannelAction { channelId = message.channelId }
                 , modalFooter = Nothing
                 , modalContent = [hsx|
                         {renderForm message}

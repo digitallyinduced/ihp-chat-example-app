@@ -23,7 +23,7 @@ renderForm :: User -> Html
 renderForm user = [hsx|
     <form method="POST" action={CreateSessionAction}>
         <div class="form-group">
-            <input name="email" value={get #email user} type="email" class="form-control" placeholder="E-Mail" required="required" autofocus="autofocus" />
+            <input name="email" value={user.email} type="email" class="form-control" placeholder="E-Mail" required="required" autofocus="autofocus" />
         </div>
         <div class="form-group">
             <input name="password" type="password" class="form-control" placeholder="Password"/>

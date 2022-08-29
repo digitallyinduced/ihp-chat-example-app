@@ -3,7 +3,7 @@ module Web.Types where
 import IHP.Prelude
 import IHP.ModelSupport
 import Generated.Types
-import IHP.LoginSupport.Types 
+import IHP.LoginSupport.Types
 
 data WebApplication = WebApplication deriving (Eq, Show)
 
@@ -39,7 +39,6 @@ data MessagesController
     deriving (Eq, Show, Data)
 
 data UsersController
-    = UsersAction
-    | NewUserAction
+    = NewUserAction
     | CreateUserAction
     deriving (Eq, Show, Data)

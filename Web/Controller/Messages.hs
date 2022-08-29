@@ -12,16 +12,16 @@ instance Controller MessagesController where
         message <- fetch messageId
 
         -- Only allow editing if the message is created by the current user
-        accessDeniedUnless (get #userId message == currentUserId)
+        accessDeniedUnless (message.userId == currentUserId)
 
         setModal EditView { .. }
-        jumpToAction ShowChannelAction { channelId = get #channelId message }
+        jumpToAction ShowChannelAction { channelId = message.channelId }
 
     action UpdateMessageAction { messageId } = do
         message <- fetch messageId
 
         -- Only allow editing if the message is created by the current user
-        accessDeniedUnless (get #userId message == currentUserId)
+        accessDeniedUnless (message.userId == currentUserId)
 
         message
             |> fill @'["body"]
@@ -29,10 +29,10 @@ instance Controller MessagesController where
             |> ifValid \case
                 Left message -> do
                     setModal EditView { .. }
-                    jumpToAction ShowChannelAction { channelId = get #channelId message }
+                    jumpToAction ShowChannelAction { channelId = message.channelId }
                 Right message -> do
                     message <- message |> updateRecord
-                    redirectTo ShowChannelAction { channelId = get #channelId message }
+                    redirectTo ShowChannelAction { channelId = message.channelId }
 
     action CreateMessageAction = do
         let message = newRecord @Message
@@ -41,18 +41,18 @@ instance Controller MessagesController where
             |> validateField #body nonEmpty
             |> set #userId currentUserId
             |> ifValid \case
-                Left message -> redirectTo ShowChannelAction { channelId = get #channelId message }
+                Left message -> redirectTo ShowChannelAction { channelId = message.channelId }
                 Right message -> do
                     message <- message |> createRecord
 
-                    let channelId = get #channelId message
+                    let channelId = message.channelId
                     redirectTo ShowChannelAction { channelId }
 
     action DeleteMessageAction { messageId } = do
         message <- fetch messageId
-        
+
         -- Only allow editing if the message is created by the current user
-        accessDeniedUnless (get #userId message == currentUserId)
+        accessDeniedUnless (message.userId == currentUserId)
 
         deleteRecord message
-        redirectTo ShowChannelAction { channelId = get #channelId message }
+        redirectTo ShowChannelAction { channelId = message.channelId }
