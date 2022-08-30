@@ -18,7 +18,7 @@ instance Controller UsersController where
             |> ifValid \case
                 Left user -> render NewView { .. }
                 Right user -> do
-                    hashed <- hashPassword (user.passwordHash)
+                    hashed <- hashPassword user.passwordHash
                     user <- user
                         |> set #passwordHash hashed
                         |> createRecord
