@@ -32,7 +32,7 @@ instance Controller ChannelsController where
             >>= pure . modify #messages (orderByDesc #createdAt)
             >>= fetchRelated #messages
         users <- query @User
-            |> filterWhereIn (#id, map (get #userId) (channel.messages))
+            |> filterWhereIn (#id, map (get #userId) channel.messages)
             |> fetch
         channels <- query @Channel
             |> orderBy #createdAt
@@ -66,7 +66,7 @@ instance Controller ChannelsController where
                     -- Create a first message
                     newRecord @Message
                         |> set #userId currentUserId
-                        |> set #channelId (channel.id)
+                        |> set #channelId channel.id
                         |> set #body ("created the " <> channel.name <> " channel")
                         |> createRecord
 

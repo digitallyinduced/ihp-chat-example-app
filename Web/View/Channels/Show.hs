@@ -40,13 +40,13 @@ instance View ShowView where
             |]
                 where
                     message = newRecord @Message
-                            |> set #channelId (channel.id)
+                            |> set #channelId channel.id
 
                     bodyPlaceholder = "Send message to #" <> channel.name
 
 getUserEmail :: Id User -> [User] -> Text
 getUserEmail id users =
-    maybe "" (get #email) $ find (\u -> id == (u.id)) users
+    maybe "" (get #email) $ find (\u -> id == u.id) users
 
 renderMessage :: [User] -> Message -> Html
 renderMessage users message = [hsx|
@@ -55,7 +55,7 @@ renderMessage users message = [hsx|
         <div class="flex-grow-1">
             <div class="header">
                 <div class="d-flex align-items-center">
-                    <div class="message-author">{getUserEmail (message.userId) users}</div>
+                    <div class="message-author">{getUserEmail message.userId users}</div>
                     {when (currentUser.id == message.userId) messageActions}
                 </div>
                 <div class="created-at">
@@ -71,10 +71,10 @@ renderMessage users message = [hsx|
     where
         messageActions = [hsx|
             <div class="actions">
-                <a href={DeleteMessageAction (message.id)} class="js-delete text-muted">
+                <a href={DeleteMessageAction message.id} class="js-delete text-muted">
                     Delete message
                 </a>
-                <a href={EditMessageAction (message.id)} class="text-muted">
+                <a href={EditMessageAction message.id} class="text-muted">
                     Edit Message
                 </a>
             </div>
