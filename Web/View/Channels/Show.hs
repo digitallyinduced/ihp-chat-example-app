@@ -19,7 +19,7 @@ instance View ShowView where
                 </ul>
 
                 <hr />
-                <a href={DeleteSessionAction} class="js-delete js-delete-no-confirm text-muted" style="font-size: 12px">← Logout {get #email currentUser}</a>
+                <a href={DeleteSessionAction} class="js-delete js-delete-no-confirm text-muted" style="font-size: 12px">← Logout {currentUser.email}</a>
             </div>
 
             <div class="col-9">
@@ -31,7 +31,7 @@ instance View ShowView where
         </div>
     |]
         where
-            messages = get #messages channel
+            messages = channel.messages
 
             newMessageForm = formFor message  [hsx|
                 {hiddenField #channelId}
@@ -40,13 +40,13 @@ instance View ShowView where
             |]
                 where
                     message = newRecord @Message
-                            |> set #channelId (get #id channel)
+                            |> set #channelId channel.id
 
-                    bodyPlaceholder = "Send message to #" <> get #name channel
+                    bodyPlaceholder = "Send message to #" <> channel.name
 
 getUserEmail :: Id User -> [User] -> Text
 getUserEmail id users =
-    maybe "" (get #email) $ find (\u -> id == (get #id u)) users
+    maybe "" (get #email) $ find (\u -> id == u.id) users
 
 renderMessage :: [User] -> Message -> Html
 renderMessage users message = [hsx|
@@ -55,15 +55,15 @@ renderMessage users message = [hsx|
         <div class="flex-grow-1">
             <div class="header">
                 <div class="d-flex align-items-center">
-                    <div class="message-author">{getUserEmail (get #userId message) users}</div>
-                    {when (get #id currentUser == get #userId message) messageActions}
+                    <div class="message-author">{getUserEmail message.userId users}</div>
+                    {when (currentUser.id == message.userId) messageActions}
                 </div>
                 <div class="created-at">
-                    {get #createdAt message |> timeAgo}
+                    {message.createdAt |> timeAgo}
                 </div>
             </div>
             <div class="message-body">
-                {get #body message}
+                {message.body}
             </div>
         </div>
     </div>
@@ -71,10 +71,10 @@ renderMessage users message = [hsx|
     where
         messageActions = [hsx|
             <div class="actions">
-                <a href={DeleteMessageAction (get #id message)} class="js-delete text-muted">
+                <a href={DeleteMessageAction message.id} class="js-delete text-muted">
                     Delete message
                 </a>
-                <a href={EditMessageAction (get #id message)} class="text-muted">
+                <a href={EditMessageAction message.id} class="text-muted">
                     Edit Message
                 </a>
             </div>

@@ -26,11 +26,11 @@ renderChannel :: Channel -> Html
 renderChannel channel = [hsx|
     <tr>
         <td>
-            <a href={ShowChannelAction (get #id channel)}>
-                {get #name channel}
+            <a href={ShowChannelAction channel.id}>
+                {channel.name}
             </a>
         </td>
-        <td><a href={EditChannelAction (get #id channel)} class="text-muted">Rename</a></td>
-        <td><a href={DeleteChannelAction (get #id channel)} class="js-delete text-muted">Delete</a></td>
+        <td><a href={EditChannelAction channel.id} class="text-muted">Rename</a></td>
+        <td><a href={DeleteChannelAction channel.id} class="js-delete text-muted">Delete</a></td>
     </tr>
 |]

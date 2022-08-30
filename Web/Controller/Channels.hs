@@ -14,14 +14,14 @@ instance Controller ChannelsController where
                 |> fetchOneOrNothing
 
         case firstChannel of
-            Just channel -> redirectTo ShowChannelAction { channelId = get #id channel }
+            Just channel -> redirectTo ShowChannelAction { channelId = channel.id }
             Nothing -> do
                 -- No channel created yet, let's create a main channel
                 channel <- newRecord @Channel
                         |> set #name "main"
                         |> createRecord
 
-                redirectTo ShowChannelAction { channelId = get #id channel }
+                redirectTo ShowChannelAction { channelId = channel.id }
 
     action NewChannelAction = do
         let channel = newRecord
@@ -32,7 +32,7 @@ instance Controller ChannelsController where
             >>= pure . modify #messages (orderByDesc #createdAt)
             >>= fetchRelated #messages
         users <- query @User
-            |> filterWhereIn (#id, map (get #userId) (get #messages channel))
+            |> filterWhereIn (#id, map (get #userId) channel.messages)
             |> fetch
         channels <- query @Channel
             |> orderBy #createdAt
@@ -59,18 +59,18 @@ instance Controller ChannelsController where
         channel
             |> buildChannel
             |> ifValid \case
-                Left channel -> render NewView { .. } 
+                Left channel -> render NewView { .. }
                 Right channel -> do
                     channel <- channel |> createRecord
 
                     -- Create a first message
                     newRecord @Message
                         |> set #userId currentUserId
-                        |> set #channelId (get #id channel)
-                        |> set #body ("created the " <> get #name channel <> " channel")
+                        |> set #channelId channel.id
+                        |> set #body ("created the " <> channel.name <> " channel")
                         |> createRecord
 
-                    redirectTo ShowChannelAction { channelId = get #id channel }
+                    redirectTo ShowChannelAction { channelId = channel.id }
 
     action DeleteChannelAction { channelId } = do
         channel <- fetch channelId
